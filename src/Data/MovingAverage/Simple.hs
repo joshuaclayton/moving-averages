@@ -2,16 +2,19 @@ module Data.MovingAverage.Simple
     ( simple
     ) where
 
-simple :: Fractional a => Int -> [a] -> [a]
-simple _ [] = []
-simple n samples
-  | n <= 0 = []
+import Data.MovingAverage.Types (SmoothedResults, buildSmoothedResults, buildSmoothedResult)
+
+simple :: Floating a => Int -> [a] -> Maybe (SmoothedResults a)
+simple _ [] = Nothing
+simple n xs
+  | n <= 0 = Nothing
   | otherwise =
-      map fst3 $ scanl1 average sampleTriples
+        Just $ buildResults xsAndSmoothedPairs
       where
+        xsAndSmoothedPairs = zip xs (map fst3 $ scanl1 average sampleTriples)
         divisors = map fromIntegral $ [1..n] ++ repeat n
-        nAgos = replicate (n - 1) 0 ++ samples
-        sampleTriples = zip3 samples divisors nAgos
+        nAgos = replicate (n - 1) 0 ++ xs
+        sampleTriples = zip3 xs divisors nAgos
 
 average :: Fractional a => (a, a, a) -> (a, a, a) -> (a, a, a)
 average (prevAvg, prevDiv, dropMe) (sample, divisor, nAgo) =
@@ -22,3 +25,6 @@ average (prevAvg, prevDiv, dropMe) (sample, divisor, nAgo) =
 
 fst3 :: (a, b, c) -> a
 fst3 (x, _, _) = x
+
+buildResults :: Floating a => [(a, a)] -> SmoothedResults a
+buildResults = buildSmoothedResults . map (uncurry buildSmoothedResult)
