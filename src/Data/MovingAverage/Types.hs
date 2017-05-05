@@ -1,8 +1,7 @@
 module Data.MovingAverage.Types
     ( SmoothedResults(..)
     , SmoothedResult(..)
-    , buildSmoothedResults
-    , buildSmoothedResult
+    , buildResults
     ) where
 
 data SmoothedResults a = SmoothedResults
@@ -17,6 +16,9 @@ data SmoothedResult a = SmoothedResult
     , srError :: a
     , srErrorSquared :: a
     } deriving (Eq, Show)
+
+buildResults :: Floating a => [(a, a)] -> SmoothedResults a
+buildResults = buildSmoothedResults . map (uncurry buildSmoothedResult)
 
 buildSmoothedResults :: Floating a => [SmoothedResult a] -> SmoothedResults a
 buildSmoothedResults xs = SmoothedResults xs sumSquaredErrors meanSquaredErrors

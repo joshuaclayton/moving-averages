@@ -2,7 +2,7 @@ module Data.MovingAverage.Simple
     ( simple
     ) where
 
-import Data.MovingAverage.Types (SmoothedResults, buildSmoothedResults, buildSmoothedResult)
+import Data.MovingAverage.Types (SmoothedResults, buildResults)
 
 simple :: Floating a => Int -> [a] -> Maybe (SmoothedResults a)
 simple _ [] = Nothing
@@ -25,6 +25,3 @@ average (prevAvg, prevDiv, dropMe) (sample, divisor, nAgo) =
 
 fst3 :: (a, b, c) -> a
 fst3 (x, _, _) = x
-
-buildResults :: Floating a => [(a, a)] -> SmoothedResults a
-buildResults = buildSmoothedResults . map (uncurry buildSmoothedResult)
