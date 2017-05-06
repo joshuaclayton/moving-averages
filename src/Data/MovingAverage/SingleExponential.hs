@@ -1,16 +1,10 @@
 module Data.MovingAverage.SingleExponential
-    ( SingleExponentialError(..)
-    , singleExponential
+    ( singleExponential
     ) where
 
-import Data.MovingAverage.Types (SmoothedResults, buildResults)
+import Data.MovingAverage.Types (ExponentialError(..), SmoothedResults, buildResults)
 
-data SingleExponentialError
-    = InvalidAlphaValue String
-    | NoValuesProvided
-    deriving (Eq, Show)
-
-singleExponential :: (Ord a, Floating a) => a -> [a] -> Either SingleExponentialError (SmoothedResults a)
+singleExponential :: (Ord a, Floating a) => a -> [a] -> Either ExponentialError (SmoothedResults a)
 singleExponential _ [] = Left NoValuesProvided
 singleExponential alpha xs
     | inRange 0 1 alpha = Right $ buildResults $ init $ scanl go initialState xs
@@ -21,4 +15,4 @@ singleExponential alpha xs
     s_t current previous = alpha * current + (1 - alpha) * previous
 
 inRange :: Ord a => a -> a -> a -> Bool
-inRange min' max' value = value > min' && value < max'
+inRange min' max' value = value >= min' && value <= max'
