@@ -19,7 +19,7 @@ spec = parallel $
 
         it "correctly handles when the alpha value is incorrect" $ do
             let (Right result) = singleExponential 0.5 [1..5]
-            resultValues result `shouldBe` [1, 1, 1.5, 2.25, 3.125]
+            resultValues result `shouldBe` [1, 1.5, 2.25, 3.125, 4.0625]
 
 resultValues :: Floating a => SmoothedResults a -> [a]
 resultValues = map srSmoothedValue . srsResults
