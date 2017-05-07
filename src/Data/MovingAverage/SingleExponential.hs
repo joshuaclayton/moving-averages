@@ -2,9 +2,9 @@ module Data.MovingAverage.SingleExponential
     ( singleExponential
     ) where
 
-import Data.MovingAverage.Types (ExponentialError(..), SmoothedResults, buildResults)
+import Data.MovingAverage.Types (MovingAverageError(..), SmoothedResults, buildResults)
 
-singleExponential :: (Ord a, Floating a) => a -> [a] -> Either ExponentialError (SmoothedResults a)
+singleExponential :: (Ord a, Floating a) => a -> [a] -> Either MovingAverageError (SmoothedResults a)
 singleExponential _ [] = Left NoValuesProvided
 singleExponential alpha xs
     | inRange 0 1 alpha = Right $ buildResults $ scanl go initialState (tail xs)

@@ -1,6 +1,6 @@
 module Data.MovingAverage.DoubleExponentialSpec where
 
-import Data.MovingAverage (SmoothedResults, ExponentialError(..), srsResults, srSmoothedValue, doubleExponential)
+import Data.MovingAverage (SmoothedResults, MovingAverageError(..), srsResults, srSmoothedValue, doubleExponential)
 import Test.Hspec
 
 main :: IO ()

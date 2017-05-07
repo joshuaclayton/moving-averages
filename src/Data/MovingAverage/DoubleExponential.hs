@@ -2,9 +2,9 @@ module Data.MovingAverage.DoubleExponential
     ( doubleExponential
     ) where
 
-import Data.MovingAverage.Types (SmoothedResults, ExponentialError(..), buildResults)
+import Data.MovingAverage.Types (SmoothedResults, MovingAverageError(..), buildResults)
 
-doubleExponential :: (Ord a, Floating a) => a -> a -> [a] -> Either ExponentialError (SmoothedResults a)
+doubleExponential :: (Ord a, Floating a) => a -> a -> [a] -> Either MovingAverageError (SmoothedResults a)
 doubleExponential _ _ [] = Left NoValuesProvided
 doubleExponential alpha beta xs =
     case (inRange 0 1 alpha, inRange 0 1 beta) of

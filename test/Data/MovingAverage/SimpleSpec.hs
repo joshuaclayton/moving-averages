@@ -1,8 +1,7 @@
 module Data.MovingAverage.SimpleSpec where
 
-import qualified Data.Maybe as M
-import           Data.MovingAverage (SmoothedResult(..), SmoothedResults(..), simple)
-import           Test.Hspec
+import Data.MovingAverage (SmoothedResult(..), SmoothedResults(..), MovingAverageError(..), simple)
+import Test.Hspec
 
 main :: IO ()
 main = hspec spec
@@ -11,7 +10,10 @@ spec :: Spec
 spec = parallel $
     describe "simple" $ do
         it "correctly calculates the average of an empty list" $
-            simple 5 ([] :: [Float]) `shouldBe` Nothing
+            simple 5 ([] :: [Float]) `shouldBe` Left NoValuesProvided
+
+        it "correctly calculates the average of an empty list" $
+            simple 0 [1,2,3,4] `shouldBe` (Left $ InvalidWindow "Window must be greater than 0")
 
         it "correctly calculates the average of a present list and small window" $
             resultValues (simple 1 [1, 2, 3, 4]) `shouldBe` [1, 2, 3, 4]
@@ -25,5 +27,7 @@ spec = parallel $
         it "correctly calculates the average of a present list and excessive window" $
             resultValues (simple 100 [1, 2, 3, 4]) `shouldBe` [1, 1.5, 2, 2.5]
 
-resultValues :: Floating a => Maybe (SmoothedResults a) -> [a]
-resultValues = map srSmoothedValue . srsResults . M.fromJust
+resultValues :: Floating a => Either MovingAverageError (SmoothedResults a) -> [a]
+resultValues = map srSmoothedValue . srsResults . right
+  where
+    right (Right v) = v

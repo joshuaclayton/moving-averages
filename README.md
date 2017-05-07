@@ -12,7 +12,7 @@ resultValues = map MA.srSmoothedValue . MA.srsResults
 
 -- window of 2
 resultValues <$> MA.simple 2 [5, 10, 20, 2]
--- Just [5.0, 7.5, 15.0, 11.0]
+-- Right [5.0, 7.5, 15.0, 11.0]
 
 -- alpha of 0.5
 resultValues <$> MA.singleExponential 0.5 [1, 2, 3, 4, 5]

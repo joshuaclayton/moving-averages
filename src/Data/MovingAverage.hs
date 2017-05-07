@@ -1,7 +1,7 @@
 module Data.MovingAverage
     ( SmoothedResults(..)
     , SmoothedResult(..)
-    , ExponentialError(..)
+    , MovingAverageError(..)
 
     , simple
     , singleExponential
@@ -11,4 +11,4 @@ module Data.MovingAverage
 import Data.MovingAverage.DoubleExponential (doubleExponential)
 import Data.MovingAverage.Simple (simple)
 import Data.MovingAverage.SingleExponential ( singleExponential)
-import Data.MovingAverage.Types (ExponentialError(..), SmoothedResults(..), SmoothedResult(..))
+import Data.MovingAverage.Types (MovingAverageError(..), SmoothedResults(..), SmoothedResult(..))

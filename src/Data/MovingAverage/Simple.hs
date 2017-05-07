@@ -2,14 +2,14 @@ module Data.MovingAverage.Simple
     ( simple
     ) where
 
-import Data.MovingAverage.Types (SmoothedResults, buildResults)
+import Data.MovingAverage.Types (SmoothedResults, MovingAverageError(..), buildResults)
 
-simple :: Floating a => Int -> [a] -> Maybe (SmoothedResults a)
-simple _ [] = Nothing
+simple :: Floating a => Int -> [a] -> Either MovingAverageError (SmoothedResults a)
+simple _ [] = Left NoValuesProvided
 simple n xs
-  | n <= 0 = Nothing
+  | n <= 0 = Left $ InvalidWindow "Window must be greater than 0"
   | otherwise =
-        Just $ buildResults xsAndSmoothedPairs
+        Right $ buildResults xsAndSmoothedPairs
       where
         xsAndSmoothedPairs = zip xs (map fst3 $ scanl1 average sampleTriples)
         divisors = map fromIntegral $ [1..n] ++ repeat n

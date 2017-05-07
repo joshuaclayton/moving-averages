@@ -1,7 +1,7 @@
 module Data.MovingAverage.Types
     ( SmoothedResults(..)
     , SmoothedResult(..)
-    , ExponentialError(..)
+    , MovingAverageError(..)
     , buildResults
     ) where
 
@@ -18,10 +18,11 @@ data SmoothedResult a = SmoothedResult
     , srErrorSquared :: a
     } deriving (Eq, Show)
 
-data ExponentialError
+data MovingAverageError
     = InvalidAlphaValue String
     | InvalidBetaValue String
     | NoValuesProvided
+    | InvalidWindow String
     deriving (Eq, Show)
 
 buildResults :: Floating a => [(a, a)] -> SmoothedResults a
