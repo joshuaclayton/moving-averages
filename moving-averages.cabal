@@ -2,6 +2,7 @@ name:                moving-averages
 version:             0.2.0.0
 homepage:            https://github.com/joshuaclayton/moving-averages#readme
 license:             MIT
+synopsis:            This is a library for calculating moving averages on lists of numbers.
 license-file:        LICENSE
 author:              Josh Clayton
 maintainer:          sayhi@joshuaclayton.me
