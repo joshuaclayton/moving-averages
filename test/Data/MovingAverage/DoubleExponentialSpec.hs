@@ -2,6 +2,7 @@ module Data.MovingAverage.DoubleExponentialSpec where
 
 import Data.MovingAverage (SmoothedResults, MovingAverageError(..), srsResults, srSmoothedValue, doubleExponential)
 import Test.Hspec
+import Test.TestHelper
 
 main :: IO ()
 main = hspec spec
@@ -22,8 +23,8 @@ spec = parallel $
             result `shouldBe` InvalidBetaValue "Beta must be 0 < b < 1"
 
         it "correctly calculates values" $ do
-            let (Right result) = doubleExponential 0.5 0.5 [3,1,3,1,3,1]
+            let result = doubleExponential 0.5 0.5 [3,1,3,1,3,1]
             resultValues result `shouldBe` [3.0, 1.0, 1.0, 0.5, 1.375, 1.21875]
 
-resultValues :: Floating a => SmoothedResults a -> [a]
-resultValues = map srSmoothedValue . srsResults
+        it "correctly shows the name of the average" $
+            graphName (doubleExponential 0.5 0.2 [1, 2, 3]) `shouldBe` "DEMA(0.5, 0.2)"

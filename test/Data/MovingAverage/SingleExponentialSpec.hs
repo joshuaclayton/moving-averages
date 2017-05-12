@@ -2,6 +2,7 @@ module Data.MovingAverage.SingleExponentialSpec where
 
 import Data.MovingAverage (SmoothedResults, MovingAverageError(..), srsResults, srSmoothedValue, singleExponential)
 import Test.Hspec
+import Test.TestHelper
 
 main :: IO ()
 main = hspec spec
@@ -18,8 +19,8 @@ spec = parallel $
             result `shouldBe` InvalidAlphaValue "Alpha must be 0 <= a <= 1"
 
         it "correctly handles when the alpha value is incorrect" $ do
-            let (Right result) = singleExponential 0.5 [1..5]
+            let result = singleExponential 0.5 [1..5]
             resultValues result `shouldBe` [1, 1.5, 2.25, 3.125, 4.0625]
 
-resultValues :: Floating a => SmoothedResults a -> [a]
-resultValues = map srSmoothedValue . srsResults
+        it "correctly shows the name of the average" $
+            graphName (singleExponential 0.2 [1, 2, 3]) `shouldBe` "SEMA(0.2)"

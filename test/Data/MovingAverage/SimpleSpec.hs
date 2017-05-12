@@ -2,6 +2,7 @@ module Data.MovingAverage.SimpleSpec where
 
 import Data.MovingAverage (SmoothedResult(..), SmoothedResults(..), MovingAverageError(..), simple)
 import Test.Hspec
+import Test.TestHelper
 
 main :: IO ()
 main = hspec spec
@@ -27,7 +28,5 @@ spec = parallel $
         it "correctly calculates the average of a present list and excessive window" $
             resultValues (simple 100 [1, 2, 3, 4]) `shouldBe` [1, 1.5, 2, 2.5]
 
-resultValues :: Floating a => Either MovingAverageError (SmoothedResults a) -> [a]
-resultValues = map srSmoothedValue . srsResults . right
-  where
-    right (Right v) = v
+        it "correctly shows the name of the average" $
+            graphName (simple 100 [1, 2, 3, 4]) `shouldBe` "SMA(100)"

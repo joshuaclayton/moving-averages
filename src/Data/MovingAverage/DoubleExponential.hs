@@ -2,7 +2,7 @@ module Data.MovingAverage.DoubleExponential
     ( doubleExponential
     ) where
 
-import Data.MovingAverage.Types (SmoothedResults, MovingAverageError(..), buildResults)
+import Data.MovingAverage.Types (SmoothedResults, MovingAverageError(..), buildDoubleExponentialMovingAverage)
 
 doubleExponential :: (Ord a, Floating a) => a -> a -> [a] -> Either MovingAverageError (SmoothedResults a)
 doubleExponential _ _ [] = Left NoValuesProvided
@@ -12,7 +12,7 @@ doubleExponential alpha beta xs =
         (False, _) -> Left $ InvalidAlphaValue "Alpha must be 0 < a < 1"
         (_, False) -> Left $ InvalidBetaValue "Beta must be 0 < b < 1"
   where
-    processResults = buildResults . map pairFromTriple
+    processResults = buildDoubleExponentialMovingAverage alpha beta . map pairFromTriple
     go (_, sPrevious, betaPrevious) current =
         ( current
         , s_t current sPrevious betaPrevious
